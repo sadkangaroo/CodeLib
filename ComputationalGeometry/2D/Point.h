@@ -3,6 +3,7 @@
 
 struct Point {
 	#define eps (1e-9)
+	#define sqr(x) ((x) * (x))
 	double x, y, ang; int lab;
 	Point() {}
 	Point(double _x, double _y): x(_x), y(_y) {}
@@ -27,21 +28,22 @@ struct Point {
 		return x * t.x + y * t.y;
 	}
 	double mo() const {
-		return sqrt(x * x + y * y);
+		return sqrt(sqr(x) + sqr(y));
 	}
 	double mo2() const {
-		return x * x + y * y;
+		return sqr(x) + sqr(y);
 	}
 	double dis(const Point &t) const {
-		return sqrt((x - t.x) * (x - t.x) + (y - t.y) * (y - t.y));
+		return sqrt(sqr(x - t.x) + sqr(y - t.y));
 	}
 	double dis2(const Point &t) const {
-		return (x - t.x) * (x - t.x) + (y - t.y) * (y - t.y);
+		return sqr(x - t.x) + sqr(y - t.y);
 	}
 	Point normalize() const {
 		return *this / mo();
 	}
 	#undef eps
+	#undef sqr
 };
 
 #endif

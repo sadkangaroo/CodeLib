@@ -4,15 +4,11 @@
 #include "Point.h"
 
 struct Line {
+	#define eps (1e-9)
 	Point a, b; double ang; int lab;
 	Line() {}
 	Line(Point _a, Point _b): a(_a), b(_b) {}
 	void load(int _lab = 0);
-	bool operator < (const Line &t) const {
-		 if (fabs(ang - t.ang) < eps) 
-			return (t.b - t.a).det(b - t.a) > eps;
-		 else return ang < t.ang;
-	}
 	double det(const Line &t) const {
 		return (b - a).det(t.b - t.a);
 	}
@@ -46,6 +42,7 @@ struct Line {
 	void getAng() {
 		ang = atan2(b.y - a.y, b.x - a.x);
 	}
+	#undef eps
 };
 
 #endif

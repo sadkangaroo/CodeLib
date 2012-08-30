@@ -2,6 +2,7 @@
 #define _Point_H_
 
 struct Point {
+	#define eps (1e-9)
 	double x, y, ang; int lab;
 	Point() {}
 	Point(double _x, double _y): x(_x), y(_y) {}
@@ -40,6 +41,7 @@ struct Point {
 	Point normalize() const {
 		return *this / mo();
 	}
+	#undef eps
 };
 
 #endif

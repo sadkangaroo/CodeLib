@@ -6,7 +6,6 @@
 
 namespace HPI {
 	#define eps (1e-9)
-	#define oo (1e10)
 	bool cmpRange(const Line &v1, const Line &v2) {
 		 if (fabs(v1.ang - v2.ang) < eps) 
 			return (v2.b - v2.a).det(v1.b - v2.a) > eps;
@@ -16,14 +15,13 @@ namespace HPI {
 		 Point cp = t1.getIntersection(t2);
 		 return (v.b - v.a).det(cp - v.a) < -eps;
 	}
-	int getKernel(Line* _seg, int N) {
-		Point *pts = new Point[N + 5];
+	int getKernel(Line* _seg, int N, Point* pts, double xmin, double ymin, double xmax, double ymax) {
 		Line *seg = new Line[N + 5], *deq = new Line[N + 5];
 		for (int i = 0; i < N; ++i) seg[i] = _seg[i];
-		seg[N++] = Line(Point(-oo, -oo), Point(oo, -oo));
-		seg[N++] = Line(Point(oo, -oo), Point(oo, oo));
-		seg[N++] = Line(Point(oo, oo), Point(-oo, oo));
-		seg[N++] = Line(Point(-oo, oo), Point(-oo, -oo));    
+		seg[N++] = Line(Point(xmin, ymin), Point(xmax, ymin));
+		seg[N++] = Line(Point(xmax, ymin), Point(xmax, ymax));
+		seg[N++] = Line(Point(xmax, ymax), Point(xmin, ymax));
+		seg[N++] = Line(Point(xmin, ymax), Point(xmin, ymin));    
 		for (int i = 0; i < N; ++i) seg[i].getAng();
 		sort(seg, seg + N, cmpRange);
 		int tN = 1; 
@@ -41,11 +39,10 @@ namespace HPI {
 		}
 		deq[top] = deq[bot]; int num = 0;
 		for (int i = bot; i < top; ++i) pts[num++] = deq[i].getIntersection(deq[i + 1]);
-		delete[] pts; delete[] seg; delete[] deq;
+		delete[] seg; delete[] deq;
 		return num;    
 	}
 	#undef eps
-	#undef oo
 }
 
 #endif

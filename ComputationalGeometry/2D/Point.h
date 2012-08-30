@@ -2,12 +2,14 @@
 #define _Point_H_
 
 struct Point {
-	#define eps (1e-9)
 	#define sqr(x) ((x) * (x))
 	double x, y, ang; int lab;
 	Point() {}
 	Point(double _x, double _y): x(_x), y(_y) {}
-	void load(int _lab = 0);
+	void load(int _lab = 0) {
+		scanf("%lf%lf", &x, &y);
+		lab = _lab;
+	}
 	void print();
 	Point operator + (const Point &t) const {
 		return Point(x + t.x, y + t.y);
@@ -42,7 +44,6 @@ struct Point {
 	Point normalize() const {
 		return *this / mo();
 	}
-	#undef eps
 	#undef sqr
 };
 

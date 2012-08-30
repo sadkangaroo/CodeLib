@@ -12,7 +12,7 @@ struct Line {
 		a.load(); b.load();
 		lab = _lab;
 	}
-	void load(double A, double B, double C) {	/* (A, B) - leftside */
+	void load(double A, double B, double C) {	/* (A, B) - leftside, Ax + By + C > 0 */
 		if (fabs(A) < eps) a = Point(0, -C / B);
 		else a = Point(-C / A, 0);
 		b = a + Point(B, -A).normalize();

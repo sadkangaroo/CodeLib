@@ -41,8 +41,11 @@ struct Point {
 	double dis2(const Point &t) const {
 		return sqr(x - t.x) + sqr(y - t.y);
 	}
-	Point normalize() const {
+	Point normalize() const {	/* avoid (0, 0) before */
 		return *this / mo();
+	}
+	void getAng() {	/* avoid (0, 0) before */
+		ang = atan2(y, x);
 	}
 	#undef sqr
 };

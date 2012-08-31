@@ -37,7 +37,7 @@ struct Line {
 		return !coincideWith(t) && (b - a).det(t.a - a) * (b - a).det(t.b - a) < eps
 			&& (t.b - t.a).det(a - t.a) * (t.b - t.a).det(b - t.a) < eps;
 	}
-	Point getIntersection(const Line &t) const {
+	Point getIntersection(const Line &t) const {	/* ensure intersected before */
 		double t1 = (b - a).det(t.a - a), t2 = -(b - a).det(t.b - a);
 		return (t.a * t2 + t.b * t1) / (t1 + t2);
 	}

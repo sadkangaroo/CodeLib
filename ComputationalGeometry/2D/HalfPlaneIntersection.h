@@ -5,15 +5,15 @@
 #include "Line.h"
 
 namespace HPI {
-	#define eps (1e-9)
+	#define eps (1e-8)
 	bool cmpRange(const Line &v1, const Line &v2) {
-		 if (fabs(v1.ang - v2.ang) < eps) 
+		if (fabs(v1.ang - v2.ang) < eps) 
 			return (v2.b - v2.a).det(v1.b - v2.a) > eps;
-		 else return v1.ang < v2.ang;
+		else return v1.ang < v2.ang;
 	}
 	bool judgeIn(const Line &v, const Line &t1, const Line &t2) {
-		 Point cp = t1.getIntersection(t2);
-		 return (v.b - v.a).det(cp - v.a) < -eps;
+		Point cp = t1.getIntersectionAsLine(t2);
+		return (v.b - v.a).det(cp - v.a) < -eps;
 	}
 	int getKernel(Line* _seg, int N, Point* pts, double xmin, double ymin, double xmax, double ymax) {
 		Line *seg = new Line[N + 5], *deq = new Line[N + 5];
@@ -38,7 +38,7 @@ namespace HPI {
 			while (top - bot >= 3 && judgeIn(deq[top - 1], deq[bot], deq[bot + 1])) bot++;
 		}
 		deq[top] = deq[bot]; int num = 0;
-		for (int i = bot; i < top; ++i) pts[num++] = deq[i].getIntersection(deq[i + 1]);
+		for (int i = bot; i < top; ++i) pts[num++] = deq[i].getIntersectionAsLine(deq[i + 1]);
 		delete[] seg; delete[] deq;
 		return num;    
 	}

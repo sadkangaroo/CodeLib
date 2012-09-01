@@ -4,7 +4,7 @@
 #include "Point.h"
 
 struct Line {
-	#define eps (1e-9)
+	#define eps (1e-8)
 	Point a, b; double ang; int lab;
 	Line() {}
 	Line(Point _a, Point _b): a(_a), b(_b) {}
@@ -23,21 +23,34 @@ struct Line {
 	double dot(const Line &t) const {
 		return (b - a).dot(t.b - t.a);
 	}
-	bool coincideWith(const Line &t) const {
+	double disAsLine(const Point &t) const {
+		return fabs((t - a).det(t - b) / a.dis(b));
+	}
+	double disAsSeg(const Point &t) const {
+		if ((b - a).dot(t - a) > eps && (a - b).dot(t - b) > eps) return disAsLine(t);		
+		return min(a.dis(t), b.dis(t));
+	}
+	bool coincideWithAsLine(const Line &t) const {
 		return fabs((b - a).det(t.a - a)) < eps && fabs((b - a).det(t.b - a)) < eps;	
 	}
-	bool parallelWith(const Line &t) const {
+	bool parallelWithAsLine(const Line &t) const {
 		return fabs((b - a).det(t.b - t.a)) < eps;
 	}
-	bool strictlyIntersectWith(const Line &t) const {
+	bool strictlyIntersectWithAsSeg(const Line &t) const {
 		return (b - a).det(t.a - a) * (b - a).det(t.b - a) < -eps
 			&& (t.b - t.a).det(a - t.a) * (t.b - t.a).det(b - t.a) < -eps;
 	}
-	bool normallyIntersectWith(const Line &t) const {
-		return !coincideWith(t) && (b - a).det(t.a - a) * (b - a).det(t.b - a) < eps
+	bool normallyIntersectWithAsSeg(const Line &t) const {
+		return !coincideWithAsLine(t) && (b - a).det(t.a - a) * (b - a).det(t.b - a) < eps
 			&& (t.b - t.a).det(a - t.a) * (t.b - t.a).det(b - t.a) < eps;
 	}
-	Point getIntersection(const Line &t) const {	/* ensure intersected before */
+	bool strictlyContainsPointAsSeg(const Point &t) const {
+		return fabs((b - a).det(t - a)) < eps && (t - a).dot(t - b) < -eps;
+	}
+	bool normallyContainsPointAsSeg(const Point &t) const {
+		return fabs((b - a).det(t - a)) < eps && (t - a).dot(t - b) < eps;
+	}
+	Point getIntersectionAsLine(const Line &t) const {	/* ensure intersected before */
 		double t1 = (b - a).det(t.a - a), t2 = -(b - a).det(t.b - a);
 		return (t.a * t2 + t.b * t1) / (t1 + t2);
 	}
@@ -47,8 +60,8 @@ struct Line {
 	Point getMirror(const Point &t) const {
 		return getProjection(t) * 2 - t;
 	}
-	void getAng() {
-		ang = atan2(b.y - a.y, b.x - a.x);
+	double getAng() {
+		return ang = atan2(b.y - a.y, b.x - a.x);
 	}
 	#undef eps
 };

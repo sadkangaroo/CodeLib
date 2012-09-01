@@ -3,6 +3,7 @@
 
 struct Point {
 	#define sqr(x) ((x) * (x))
+	#define eps (1e-8)
 	double x, y, ang; int lab;
 	Point() {}
 	Point(double _x, double _y): x(_x), y(_y) {}
@@ -22,6 +23,15 @@ struct Point {
 	}
 	Point operator / (const double t) const {
 		return Point(x / t, y / t);
+	}
+	Point operator * (const Point &t) const {
+		return Point(x * t.x - y * t.y, x * t.y + y * t.x);
+	}
+	Point operator / (const Point &t) const {
+		return Point(x * t.x + y * t.y, y * t.x - x * t.y) / t.mo2();
+	}
+	bool operator == (const Point &t) const {
+		return fabs(x - t.x) < eps && fabs(y - t.y) < eps;
 	}
 	double det(const Point &t) const {
 		return x * t.y - y * t.x;
@@ -44,10 +54,17 @@ struct Point {
 	Point normalize() const {	/* avoid (0, 0) before */
 		return *this / mo();
 	}
-	void getAng() {	/* avoid (0, 0) before */
-		ang = atan2(y, x);
+	Point rotate(double a) {
+		return *this * Point(cos(a), sin(a));
+	}
+	void makeLine(const Point &t, double &A, double &B, double &C) const {	/* (A, B) - leftside, Ax + By + C > 0 */
+		A = y - t.y; B = t.x - x; C = det(t); 
+	}
+	double getAng() {	/* avoid (0, 0) before */
+		return ang = atan2(y, x);
 	}
 	#undef sqr
+	#undef eps
 };
 
 #endif

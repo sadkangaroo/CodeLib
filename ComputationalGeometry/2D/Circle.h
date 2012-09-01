@@ -52,7 +52,7 @@ struct Circle {
 		pts[0] = t.a + (t.b - t.a) * (-B - sqrt(delta)) / (2 * A);
 		pts[1] = t.a + (t.b - t.a) * (-B + sqrt(delta)) / (2 * A);
 		if (delta > eps) return 2; else return 1;
-    }
+	}
 	int strictlyGetIntersectionAsSeg(const Line &t, Point* pts) const {
 		double dx = t.b.x - t.a.x, dy = t.b.y - t.a.y;
 		double u = t.a.x - o.x, v = t.a.y - o.y;
@@ -66,8 +66,8 @@ struct Circle {
 		if (t1 > eps && t1 < 1 - eps) pts[res++] = t.a + (t.b - t.a) * t1;
 		if (t2 > eps && t2 < 1 - eps) pts[res++] = t.a + (t.b - t.a) * t2;
 		return res;
-    }
-    int getIntersection(const Circle &t, Point* pts) const {	/* return -1 if coincide */
+	}
+	int getIntersection(const Circle &t, Point* pts) const {	/* return -1 if coincide */
 		if (o == t.o && fabs(r - t.r) < eps) return -1;
 		double mx = t.o.x - o.x, sx = t.o.x + o.x, my = t.o.y - o.y, sy = t.o.y + o.y;
 		double sq = sqr(mx) + sqr(my), d = -(sq - sqr(r - t.r)) * (sq - sqr(r + t.r));
@@ -78,7 +78,7 @@ struct Circle {
 		pts[0] = Point((tx - dy), (ty + dx)) / (sq * 2);
 		pts[1] = Point((tx + dy), (ty - dx)) / (sq * 2);
 		if (d > eps) return 2; else return 1;
-    }
+	}
 	double interArea(const Circle &t) const {
 		if (strictlyTo(t) || toOn(t)) return 0; 
 		if (strictlyIn(t) || inOn(t)) return area(); 
@@ -97,7 +97,7 @@ struct Circle {
 				res += ((tmp[i + 1] - o) / (tmp[i] - o)).getAng() * r * r;
 			else res += (tmp[i] - o).det(tmp[i + 1] - o);
 		} return 0.5 * res;
-    }
+	}
 	double interArea(Point* pts, int N) const {
 		double res = 0;
 		for (int i = 0; i < N; ++i) 

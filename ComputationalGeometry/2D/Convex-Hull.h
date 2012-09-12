@@ -34,7 +34,7 @@ namespace CH {
         }
         return res;
     }
-    double dis(Point* pts1, int N1, Point* pts2, int N2) {    /* default is minimal, change min to max to get maximal */
+    double dis(Point* pts1, int N1, Point* pts2, int N2) {    /* ensure seperated, default is minimal, change min to max to get maximal */
         Point *ch1 = new Point[3 * N1 + 5], *ch2 = new Point[3 * N2 + 5];
         N1 = grahamAnticlockNoBoarder(pts1, N1, ch1); 
 		for (int i = N1; i < 3 * N1 + 5; ++i) ch1[i] = ch1[i - N1];

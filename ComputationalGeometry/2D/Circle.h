@@ -29,6 +29,9 @@ struct Circle {
     bool toOn(const Circle &t) const {
         return fabs(r + t.r - o.dis(t.o)) < eps;
     }
+    bool coincide(const Circle &t) const {
+        return o == t.o && fabs(r - t.r) < eps;
+    }
     bool strictlyIntersectWith(const Circle &t) const {
         double d = o.dis(t.o);
         return d > fabs(r - t.r) + eps && d < r + t.r - eps;
@@ -50,29 +53,27 @@ struct Circle {
         double d = t.disAsLine(o); if (d > r + eps) return 0;
         Point p = t.getProjection(o);
         double x = sqrt(fabs(sqr(r) - sqr(d)));
-        pts[0] = p - (t.b - t.a).normalize() * x;
-        pts[1] = p + (t.b - t.a).normalize() * x;
+        Point delta = (t.b - t.a).normalize() * x;
+        pts[0] = p - delta; pts[1] = p + delta;
         if (pts[0] == pts[1]) return 1; else return 2;
     }
     int strictlyGetIntersectionAsSeg(const Line &t, Point* pts) const {
         double d = t.disAsLine(o); if (d > r + eps) return 0;
         Point p = t.getProjection(o);
         double x = sqrt(fabs(sqr(r) - sqr(d)));
-        int res = 0;
-        Point t0 = p - (t.b - t.a).normalize() * x, t1 = p + (t.b - t.a).normalize() * x; 
-        if (t.strictlyContainsPointAsSeg(t0)) pts[res++] = t0;
-        if (t.strictlyContainsPointAsSeg(t1)) pts[res++] = t1;
+        int res = 0; delta = (t.b - t.a).normalize() * x;
+        if (t.strictlyContainsPointAsSeg(p - delta)) pts[res++] = p - delta;
+        if (t.strictlyContainsPointAsSeg(p + delta)) pts[res++] = p + delta;
         return res;
     }
-    int getIntersection(const Circle &t, Point* pts) const {    /* return -1 if coincide */
-        if (o == t.o && fabs(r - t.r) < eps) return -1;
+    int getIntersection(const Circle &t, Point* pts) const {    /* ensure not coincide */
         double d = o.dis(t.o);
         if (d < fabs(r - t.r) - eps || d > r + t.r + eps) return 0;
         double x = (sqr(r) + sqr(d) - sqr(t.r)) / (2 * d);
         Point p = (o * (d - x) + t.o * x) / d;
         double y = sqrt(fabs(sqr(r) - sqr(x)));
-        pts[0] = p - (t.o - o).turn().normalize() * y;
-        pts[1] = p + (t.o - o).turn().normalize() * y;
+        Point delta = (t.o - o).turn().normalize() * y;
+        pts[0] = p - delta; pts[1] = p + delta;
         if (pts[0] == pts[1]) return 1; else return 2;
     }
     double interArea(const Circle &t) const {

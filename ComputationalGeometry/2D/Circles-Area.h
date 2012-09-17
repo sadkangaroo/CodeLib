@@ -15,7 +15,7 @@ namespace CA {
             return a < t.a;
         }
     };
-    inline Point polar(double a, double r) {
+    Point polar(double a, double r) {
         return Point(cos(a), sin(a)) * r;
     }
     void add(Event* events, int& top, double a, int t) {

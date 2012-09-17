@@ -1,10 +1,10 @@
 #ifndef _CLOSESTPAIR_H_
 #define _CLOSESTPAIR_H_
 
+#include "Basic.h"
 #include "Point.h"
 
 namespace CP {
-    #define eps (1e-8)
     bool cmpX(const Point &a, const Point &b) {
         return a.x < b.x;
     }
@@ -33,7 +33,6 @@ namespace CP {
         delete[] tmp;
         return res;
     }
-    #undef eps
 }
 
 #endif

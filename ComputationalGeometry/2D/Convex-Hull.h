@@ -1,11 +1,11 @@
 #ifndef _CONVEXHULL_H_
 #define _CONVEXHULL_H_
 
+#include "Basic.h"
 #include "Point.h"
 #include "Line.h"
 
 namespace CH {
-    #define eps (1e-9)
     bool cmp(const Point &a, const Point &b) {
         if (fabs(a.y - b.y) < eps) return a.x < b.x;
         return a.y < b.y;
@@ -29,8 +29,8 @@ namespace CH {
         for (int i = 1; i < N2; ++i) if (cmp(ch2[p], ch2[i])) p = i;
         for (int i = 0; i < N1; ++i) {
             while ((ch1[i] - ch1[i + 1]).det(ch2[p + 1] - ch2[p]) > eps) p++;
-            res = min(res, Line(ch1[i], ch1[i + 1]).disAsSeg(ch2[p]));
-            res = min(res, Line(ch1[i], ch1[i + 1]).disAsSeg(ch2[p + 1]));
+            res = min(res, Line(ch1[i], ch1[i + 1]).disToSegment(ch2[p]));
+            res = min(res, Line(ch1[i], ch1[i + 1]).disToSegment(ch2[p + 1]));
         }
         return res;
     }
@@ -44,7 +44,6 @@ namespace CH {
         delete[] ch1; delete[] ch2;
         return res;
     }
-    #undef eps
 }
 
 #endif

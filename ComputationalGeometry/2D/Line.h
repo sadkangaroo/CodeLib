@@ -8,9 +8,9 @@ struct Line {
     Point a, b; double ang; int lab;
     Line() {}
     Line(Point _a, Point _b): a(_a), b(_b) {}
-    void load(int _lab = 0) {
-        a.load(); b.load();
+    bool load(int _lab = 0) {
         lab = _lab;
+        return a.load() && b.load();
     }
     void load(double A, double B, double C) {    /* (A, B) - leftside, Ax + By + C > 0 */
         if (fabs(A) < eps) a = Point(0, -C / B);

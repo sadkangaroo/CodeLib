@@ -7,9 +7,9 @@ struct Point {
     double x, y, ang; int lab;
     Point() {}
     Point(double _x, double _y): x(_x), y(_y) {}
-    void load(int _lab = 0) {
-        scanf("%lf%lf", &x, &y);
+    bool load(int _lab = 0) {
         lab = _lab;
+        return scanf("%lf%lf", &x, &y) == 2;
     }
     void print();
     Point operator + (const Point &t) const {
